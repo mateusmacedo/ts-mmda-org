@@ -39,6 +39,9 @@ importers:
       '@nx/next':
         specifier: 19.2.3
         version: 19.2.3(@babel/core@7.24.7)(@babel/traverse@7.24.7)(@types/node@20.14.2)(@zkochan/js-yaml@0.0.7)(eslint@8.57.0)(next@14.2.3(@babel/core@7.24.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.5))(nx@19.2.3)(typescript@5.4.5)(webpack@5.92.0)
+      '@nx/node':
+        specifier: 19.2.3
+        version: 19.2.3(@babel/traverse@7.24.7)(@types/node@20.14.2)(@zkochan/js-yaml@0.0.7)(eslint@8.57.0)(nx@19.2.3)(ts-node@10.9.1(@types/node@20.14.2)(typescript@5.4.5))(typescript@5.4.5)
       '@nx/workspace':
         specifier: 19.2.3
         version: 19.2.3
