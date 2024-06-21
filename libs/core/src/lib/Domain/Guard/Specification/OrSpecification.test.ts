@@ -12,12 +12,11 @@ describe('OrSpecification', () => {
     const spec3 = {
       isSatisfiedBy: jest.fn().mockReturnValue(true),
     } as unknown as OrSpecification<unknown>;
-    const orSpec = new OrSpecification(spec1, spec2);
-    const final = orSpec.or(spec3);
+    const orSpec = new OrSpecification(spec1, spec2, spec3);
     const candidate = {};
 
     // Act
-    const result = final.isSatisfiedBy(candidate);
+    const result = orSpec.isSatisfiedBy(candidate);
 
     // Assert
     expect(result).toBe(true);

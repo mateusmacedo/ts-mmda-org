@@ -37,10 +37,9 @@ describe('NotSpecification', () => {
       isSatisfiedBy: jest.fn().mockReturnValue(false),
     } as unknown as NotSpecification<unknown>;
     const notSpec = new NotSpecification(innerSpec);
-    const finalSpec = notSpec.not();
 
     // Act
-    const result = finalSpec.isSatisfiedBy({});
+    const result = notSpec.isSatisfiedBy({});
 
     // Assert
     expect(result).toBe(true);

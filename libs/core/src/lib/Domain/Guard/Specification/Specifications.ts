@@ -2,20 +2,7 @@ import { Candidate, ISpecification } from './ISpecification';
 
 export abstract class BaseSpecification<T> implements ISpecification<T> {
   protected specs: ISpecification<T>[];
-
   abstract isSatisfiedBy(candidate: Candidate<T>): boolean;
-
-  or(...specs: ISpecification<T>[]): ISpecification<T> {
-    return new OrSpecification<T>(this, ...specs);
-  }
-
-  not(): ISpecification<T> {
-    return new NotSpecification<T>(...this.specs);
-  }
-
-  and(...specs: ISpecification<T>[]): ISpecification<T> {
-    return new AndSpecification<T>(this, ...specs);
-  }
 }
 
 export class AndSpecification<T> extends BaseSpecification<T> {

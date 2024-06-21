@@ -52,12 +52,11 @@ describe('AndSpecification', () => {
     const spec3 = {
       isSatisfiedBy: jest.fn().mockReturnValue(true),
     } as unknown as AndSpecification<unknown>;
-    const andSpec = new AndSpecification(spec1, spec2);
-    const finalSpec = andSpec.and(spec3);
+    const andSpec = new AndSpecification(spec1, spec2, spec3);
     const candidate = {};
 
     // Act
-    const result = finalSpec.isSatisfiedBy(candidate);
+    const result = andSpec.isSatisfiedBy(candidate);
 
     // Assert
     expect(result).toBe(true);
