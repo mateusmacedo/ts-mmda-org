@@ -1,4 +1,4 @@
-import { InstanceCreationError, InvalidPropsError, TargetConstructorError } from './Errors';
+import { InstanceCreationError, InvalidPropsError, TargetConstructorError } from './FactoryErrors';
 
 export interface Factory {
   create<T>(target: new (...args: unknown[]) => T, props?: ConstructorParameters<typeof target>): T;
