@@ -1,5 +1,5 @@
+import { BasicFactory, Factory } from './Factory';
 import { InstanceCreationError, InvalidPropsError, TargetConstructorError } from './FactoryErrors';
-import { BasicFactory, Factory } from './InstanceFactory';
 
 class ExampleClass {
   constructor(
