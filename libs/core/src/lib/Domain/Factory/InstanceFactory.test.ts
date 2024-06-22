@@ -1,4 +1,4 @@
-import { InstanceCreationError, InvalidPropsError, TargetConstructorError } from './Errors';
+import { InstanceCreationError, InvalidPropsError, TargetConstructorError } from './FactoryErrors';
 import { BasicFactory, Factory } from './InstanceFactory';
 
 class ExampleClass {
