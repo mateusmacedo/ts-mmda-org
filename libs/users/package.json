@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "tslib": "^2.6.3"
+    "tslib": "^2.6.3",
+    "@mmda/core": "0.0.1"
   },
   "name": "@mmda/users",
   "version": "0.0.1"
