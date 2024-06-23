@@ -1,4 +1,4 @@
-import { SpecificationNotSetError } from './SpecificationNotSetError';
+import { SpecificationNotSetError } from './SpecificationErrors';
 
 describe('SpecificationNotSetError', () => {
   it('should have the correct name', () => {
