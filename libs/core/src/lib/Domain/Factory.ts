@@ -1,10 +1,10 @@
 import { InstanceCreationError, InvalidPropsError, TargetConstructorError } from './FactoryErrors';
 
-export interface Factory {
+export interface IFactory {
   create<T>(target: new (...args: unknown[]) => T, props?: ConstructorParameters<typeof target>): T;
 }
 
-export class BasicFactory implements Factory {
+export class Factory implements IFactory {
   create<T>(
     target: new (...args: unknown[]) => T,
     props?: ConstructorParameters<typeof target>,

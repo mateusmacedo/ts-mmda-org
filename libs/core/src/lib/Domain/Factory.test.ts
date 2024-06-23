@@ -1,4 +1,4 @@
-import { BasicFactory, Factory } from './Factory';
+import { Factory, IFactory } from './Factory';
 import { InstanceCreationError, InvalidPropsError, TargetConstructorError } from './FactoryErrors';
 
 class ExampleClass {
@@ -9,10 +9,10 @@ class ExampleClass {
 }
 
 describe('BasicFactory', () => {
-  let factory: Factory;
+  let factory: IFactory;
 
   beforeEach(() => {
-    factory = new BasicFactory();
+    factory = new Factory();
   });
 
   // Happy Path Tests
