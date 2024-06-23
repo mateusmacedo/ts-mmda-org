@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mmda/core": ["libs/core/src/index.ts"]
+      "@mmda/core": ["libs/core/src/index.ts"],
+      "@mmda/users": ["libs/users/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
