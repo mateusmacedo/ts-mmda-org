@@ -1,3 +1,7 @@
+export interface IdentityGenerator<ID> {
+  generate(): ID;
+}
+
 export type BaseEntityProps<ID> = {
   id: ID;
   version: number;
@@ -9,7 +13,7 @@ export type BaseEntityProps<ID> = {
 export type EntityProps<T> = Partial<T>;
 
 export abstract class BaseEntity<T extends BaseEntityProps<ID>, ID> {
-  private readonly props: T;
+  protected props: T;
 
   constructor(props: EntityProps<T>) {
     const {
