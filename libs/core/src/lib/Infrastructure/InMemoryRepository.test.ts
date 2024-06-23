@@ -1,4 +1,5 @@
 import { BaseEntity, BaseEntityProps } from '../Domain/Entity';
+import { RepositoryError } from '../Domain/RepositoryErrors';
 import { InMemoryRepository } from './InMemoryRepository';
 
 class TestEntity extends BaseEntity<BaseEntityProps<string>, string> {
@@ -63,10 +64,17 @@ describe('InMemoryRepository', () => {
       expect(foundEntity).toBeNull();
     });
 
-    it('should return the entity for findById with existing id', async () => {
+    it('should throw an error when saving an entity with an existing id', async () => {
       await repository.save(entity);
-      const foundEntity = await repository.findById(entityId);
-      expect(foundEntity).toEqual(entity);
+      await expect(repository.save(entity)).rejects.toThrow(RepositoryError);
+    });
+
+    it('should throw an error when deleting a non-existent entity', async () => {
+      await expect(repository.delete(entity)).rejects.toThrow(RepositoryError);
+    });
+
+    it('should throw an error when deleting a non-existent entity by ID', async () => {
+      await expect(repository.deleteById('non-existent-id')).rejects.toThrow(RepositoryError);
     });
 
     it('should return an empty array for findAll when no entities are present', async () => {
@@ -118,13 +126,13 @@ describe('InMemoryRepository', () => {
 
     it('should not remove any entity when deleteById is called with a non-existent id', async () => {
       await repository.save(entity);
-      await repository.deleteById('non-existent-id');
+      await expect(repository.deleteById('non-existent-id')).rejects.toThrow(RepositoryError);
       const exists = await repository.exists(entityId);
       expect(exists).toBe(true);
     });
 
     it('should not remove any entity when deleteById is called on an empty repository', async () => {
-      await repository.deleteById('non-existent-id');
+      await expect(repository.deleteById('non-existent-id')).rejects.toThrow(RepositoryError);
       const allEntities = await repository.findAll();
       expect(allEntities).toEqual([]);
     });
