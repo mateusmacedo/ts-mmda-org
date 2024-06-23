@@ -9,8 +9,7 @@ export type TMessagePayload<P = unknown> = {
 };
 
 export enum EMessageStatus {
-  COMMITTED = 'COMMITTED',
-  FAILED = 'FAILED',
+  CREATED = 'CREATED',
 }
 
 export type TMessageProps<P = unknown, M = unknown> = {

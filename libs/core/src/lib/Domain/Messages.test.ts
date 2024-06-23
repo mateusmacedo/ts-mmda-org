@@ -13,7 +13,7 @@ describe('Message Class', () => {
   const validProps: TMessageProps = {
     id: '123',
     type: 'TEST',
-    status: EMessageStatus.COMMITTED,
+    status: EMessageStatus.CREATED,
     payload: { data: 'payloadData' },
     metadata: { info: 'metadataInfo' },
     timestamp: Date.now(),

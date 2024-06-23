@@ -8,7 +8,7 @@ class TestCommand extends Command<unknown> {
     const props: TMessageProps<unknown, unknown> = {
       id: '1',
       type: 'TestCommand',
-      status: EMessageStatus.COMMITTED,
+      status: EMessageStatus.CREATED,
       payload: payload,
       metadata: {},
       timestamp: Date.now(),
@@ -22,7 +22,7 @@ class TestQuery extends Query<unknown> {
     const props: TMessageProps<unknown, unknown> = {
       id: '2',
       type: 'TestQuery',
-      status: EMessageStatus.COMMITTED,
+      status: EMessageStatus.CREATED,
       payload: payload,
       metadata: {},
       timestamp: Date.now(),
@@ -36,7 +36,7 @@ class TestEvent extends Event<unknown> {
     const props: TMessageProps<unknown, unknown> = {
       id: '3',
       type: 'TestEvent',
-      status: EMessageStatus.COMMITTED,
+      status: EMessageStatus.CREATED,
       payload: payload,
       metadata: {},
       timestamp: Date.now(),
