@@ -17,7 +17,7 @@ class AnotherTestValueObject extends BaseValueObject<{
 }> {}
 
 describe('BaseValueObject', () => {
-  it('should create an instance with valid props and check if equals method returns true for same instance', () => {
+  it('should create an instance with valid props and check if equals method returns true for the same instance', () => {
     const vo = new TestValueObject({ id: 1, name: 'Test' });
     expect(vo.equals(vo)).toBeTruthy();
   });
@@ -112,5 +112,21 @@ describe('BaseValueObject', () => {
     const vo1 = new TestValueObject({ id: 1 });
     const vo2 = new TestValueObject({ id: 2 });
     expect(vo1.equals(vo2)).toBeFalsy();
+  });
+
+  it('should correctly compare nested objects', () => {
+    const vo1 = new TestValueObject({ obj: { key: 'value' } });
+    const vo2 = new TestValueObject({ obj: { key: 'value' } });
+    const vo3 = new TestValueObject({ obj: { key: 'different' } });
+    expect(vo1.equals(vo2)).toBeTruthy();
+    expect(vo1.equals(vo3)).toBeFalsy();
+  });
+
+  it('should correctly compare arrays', () => {
+    const vo1 = new TestValueObject({ values: [1, 2, 3] });
+    const vo2 = new TestValueObject({ values: [1, 2, 3] });
+    const vo3 = new TestValueObject({ values: [3, 2, 1] });
+    expect(vo1.equals(vo2)).toBeTruthy();
+    expect(vo1.equals(vo3)).toBeFalsy();
   });
 });
