@@ -1,6 +1,6 @@
 import { ISpecification } from './ISpecification';
 import { SpecificationBuilder } from './ISpecificationBuilder';
-import { SpecificationNotSetError } from './SpecificationNotSetError';
+import { SpecificationNotSetError } from './SpecificationErrors';
 import { AndSpecification, NotSpecification, OrSpecification } from './Specifications';
 
 export class BaseSpecificationBuilder<T> implements SpecificationBuilder<T> {

@@ -1,6 +1,6 @@
 import { BaseSpecificationBuilder } from './BaseSpecificationBuilder';
 import { ISpecification } from './ISpecification';
-import { SpecificationNotSetError } from './SpecificationNotSetError';
+import { SpecificationNotSetError } from './SpecificationErrors';
 
 class DummyCandidate {}
 
