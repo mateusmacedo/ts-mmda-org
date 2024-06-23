@@ -3,6 +3,8 @@ export * from './Factory';
 export * from './FactoryErrors';
 export * from './MessageErrors';
 export * from './Messages';
+export * from './Repository';
+export * from './RepositoryErrors';
 export * from './Specification';
 export * from './Validation';
 export * from './ValueObject';
