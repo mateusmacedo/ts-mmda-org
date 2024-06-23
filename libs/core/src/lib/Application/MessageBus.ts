@@ -27,7 +27,7 @@ export interface MessageBus {
 
 export class BasicMessageBus implements MessageBus {
   constructor(
-    private commandHandlers: Map<string, TCommandHandler<Command<unknown, unknown>>> = new Map(),
+    private commandHandlers: Map<string, TCommandHandler<Command<unknown, unknown>>[]> = new Map(),
     private queryHandlers: Map<string, IQueryHandler<Query<unknown, unknown>, unknown>> = new Map(),
     private eventHandlers: Map<string, TEventHandler<Event<unknown, unknown>>[]> = new Map(),
     private middlewares: Middleware<IMessage<unknown, unknown>>[] = [],
@@ -41,22 +41,32 @@ export class BasicMessageBus implements MessageBus {
     commandType: string,
     handler: TCommandHandler<T>,
   ): void {
-    this.commandHandlers.set(commandType, handler);
+    if (!this.commandHandlers.has(commandType)) {
+      this.commandHandlers.set(commandType, []);
+    }
+    this.commandHandlers
+      .get(commandType)
+      .push(handler as TCommandHandler<Command<unknown, unknown>>);
   }
 
   async sendCommand<T extends Command<unknown, unknown>>(command: T): Promise<void> {
-    const handler = this.commandHandlers.get(command.type) as TCommandHandler<T>;
-    if (!handler) {
+    const handlers = this.commandHandlers.get(command.type) || [];
+    if (handlers.length === 0) {
       throw new Error(`No handler registered for command type ${command.type}`);
     }
-    await this.applyMiddlewares(command, async () => handler.handle(command));
+    await this.applyMiddlewares(command, async () => {
+      await Promise.allSettled(handlers.map((handler) => handler.handle(command)));
+    });
   }
 
   registerQueryHandler<T extends Query<unknown, unknown>, R>(
     queryType: string,
     handler: IQueryHandler<T, R>,
   ): void {
-    this.queryHandlers.set(queryType, handler);
+    if (this.queryHandlers.has(queryType)) {
+      throw new Error(`A handler is already registered for query type ${queryType}`);
+    }
+    this.queryHandlers.set(queryType, handler as IQueryHandler<Query<unknown, unknown>, unknown>);
   }
 
   async sendQuery<T extends Query<unknown, unknown>, R>(query: T): Promise<R> {
@@ -86,9 +96,9 @@ export class BasicMessageBus implements MessageBus {
       return;
     }
 
-    for (const handler of handlers) {
-      await this.applyMiddlewares(event, () => handler.handle(event));
-    }
+    await this.applyMiddlewares(event, async () => {
+      await Promise.allSettled(handlers.map((handler) => handler.handle(event)));
+    });
   }
 
   private async applyMiddlewares<T extends IMessage<unknown, unknown>>(
