@@ -1,13 +1,13 @@
 import { ValidationError } from './ValidationErrors';
 export type TPath = string | number;
 
-export type ValidationResult = {
+export type TValidationResult = {
   success: boolean;
   errors: ValidationError[];
 };
 
 export interface IValidator<T = unknown> {
-  validate(input: T, path?: TPath): ValidationResult;
+  validate(input: T, path?: TPath): TValidationResult;
 }
 
 export function buildPath(base: string, key: TPath): string {
@@ -23,14 +23,14 @@ export function buildPath(base: string, key: TPath): string {
 export class ArrayValidator implements IValidator<unknown> {
   constructor(private rule: IValidator<unknown>) {}
 
-  validate(input: unknown, path: TPath = ''): ValidationResult {
+  validate(input: unknown, path: TPath = ''): TValidationResult {
     if (!Array.isArray(input)) {
       return {
         success: false,
         errors: [new ValidationError(path.toString(), 'Expected an array')],
       };
     }
-    const result: ValidationResult = { success: true, errors: [] };
+    const result: TValidationResult = { success: true, errors: [] };
     input.forEach((item, index) => {
       const validation = this.rule.validate(item, path ? buildPath(path.toString(), index) : index);
       if (!validation.success) {
@@ -45,14 +45,14 @@ export class ArrayValidator implements IValidator<unknown> {
 export class ObjectValidator<T extends { [key: string]: unknown }> implements IValidator<T> {
   constructor(private rules: { [K in keyof T]: IValidator<T[K]> }) {}
 
-  validate(input: unknown, path: TPath = ''): ValidationResult {
+  validate(input: unknown, path: TPath = ''): TValidationResult {
     if (typeof input !== 'object' || Array.isArray(input) || input === null) {
       return {
         success: false,
         errors: [new ValidationError(path.toString(), 'Expected an object')],
       };
     }
-    const result: ValidationResult = { success: true, errors: [] };
+    const result: TValidationResult = { success: true, errors: [] };
     for (const key in this.rules) {
       if (Object.prototype.hasOwnProperty.call(this.rules, key)) {
         const rule = this.rules[key];

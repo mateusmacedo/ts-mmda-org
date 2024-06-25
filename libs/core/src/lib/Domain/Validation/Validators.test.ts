@@ -4,12 +4,12 @@ import {
   IValidator,
   ObjectValidator,
   TPath,
-  ValidationResult,
+  TValidationResult,
   buildPath,
 } from './Validators';
 
 class MockValidator implements IValidator<unknown> {
-  validate(input: unknown, path: TPath = ''): ValidationResult {
+  validate(input: unknown, path: TPath = ''): TValidationResult {
     if (input === 'valid') {
       return { success: true, errors: [] };
     } else {
