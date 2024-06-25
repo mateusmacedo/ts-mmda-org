@@ -1,6 +1,6 @@
-import { BaseValueObject } from './ValueObject';
+import { ValueObject } from './ValueObject';
 
-class TestValueObject extends BaseValueObject<{
+class TestValueObject extends ValueObject<{
   id?: number;
   name?: string | null;
   values?: number[];
@@ -8,7 +8,7 @@ class TestValueObject extends BaseValueObject<{
   num?: number;
 }> {}
 
-class AnotherTestValueObject extends BaseValueObject<{
+class AnotherTestValueObject extends ValueObject<{
   id?: number;
   name?: string | null;
   values?: number[];

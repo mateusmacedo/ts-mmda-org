@@ -1,7 +1,7 @@
-import { BaseEntity, Repository, RepositoryError, TBaseEntityProps } from '../Domain';
+import { BaseEntity, IRepository, RepositoryError, TBaseEntityProps } from '../Domain';
 
 export class InMemoryRepository<T extends BaseEntity<TBaseEntityProps<ID>, ID>, ID>
-  implements Repository<T, ID>
+  implements IRepository<T, ID>
 {
   private entities: Map<string, T> = new Map();
 

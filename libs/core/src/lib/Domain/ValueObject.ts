@@ -1,28 +1,28 @@
-export type ValueObjectProps<T> = {
+export type TValueObjectProps<T> = {
   [Property in keyof T]?: T[Property];
 };
 
-export interface ValueObject<T extends ValueObjectProps<T>> {
-  equals(value: ValueObject<T>): boolean;
+export interface IValueObject<T extends TValueObjectProps<T>> {
+  equals(value: IValueObject<T>): boolean;
   toString(): string;
-  toValue(): ValueObjectProps<T>;
+  toValue(): TValueObjectProps<T>;
 }
 
-export abstract class BaseValueObject<T extends ValueObjectProps<T>> implements ValueObject<T> {
+export abstract class ValueObject<T extends TValueObjectProps<T>> implements IValueObject<T> {
   protected readonly props: T;
 
   constructor(props?: T) {
     this.props = Object.freeze(props || ({} as T)); // Ensure immutability and handle undefined props
   }
 
-  public equals(vo: ValueObject<T>): boolean {
+  public equals(vo: IValueObject<T>): boolean {
     if (vo.constructor.name !== this.constructor.name) {
       return false;
     }
     return this.compareProps(this.props, vo.toValue());
   }
 
-  private compareProps(props1: ValueObjectProps<T>, props2: ValueObjectProps<T>): boolean {
+  private compareProps(props1: TValueObjectProps<T>, props2: TValueObjectProps<T>): boolean {
     const keys1 = Object.keys(props1) as Array<keyof T>;
     const keys2 = Object.keys(props2) as Array<keyof T>;
 
@@ -37,7 +37,7 @@ export abstract class BaseValueObject<T extends ValueObjectProps<T>> implements 
       const areObjects = this.isObject(val1) && this.isObject(val2);
       if (
         (areObjects &&
-          !this.compareProps(val1 as ValueObjectProps<T>, val2 as ValueObjectProps<T>)) ||
+          !this.compareProps(val1 as TValueObjectProps<T>, val2 as TValueObjectProps<T>)) ||
         (!areObjects && val1 !== val2)
       ) {
         return false;
