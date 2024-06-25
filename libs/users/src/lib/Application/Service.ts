@@ -1,4 +1,4 @@
-import { IdentityGenerator, IFactory, RepositoryError } from '@mmda/core';
+import { IFactory, IIdentityGenerator, RepositoryError } from '@mmda/core';
 import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
@@ -6,7 +6,7 @@ import { UserEmail, UserId, UserPassword } from '../Domain/ValueObjects';
 
 export class UserApplicationService {
   constructor(
-    private identityGenerator: IdentityGenerator<string>,
+    private identityGenerator: IIdentityGenerator<string>,
     private userService: IUserService,
     private userRepository: IUserRepository,
     private factory: IFactory,

@@ -1,4 +1,4 @@
-import { IdentityGenerator, IFactory, RepositoryError } from '@mmda/core';
+import { IFactory, IIdentityGenerator, RepositoryError } from '@mmda/core';
 import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
@@ -7,13 +7,13 @@ import { UserApplicationService } from './Service';
 
 describe('UserApplicationService', () => {
   let userApplicationService: UserApplicationService;
-  let identityGeneratorMock: jest.Mocked<IdentityGenerator<string>>;
+  let identityGeneratorMock: jest.Mocked<IIdentityGenerator<string>>;
   let userServiceMock: jest.Mocked<IUserService>;
   let userRepositoryMock: jest.Mocked<IUserRepository>;
   let factoryMock: jest.Mocked<IFactory>;
 
   beforeEach(() => {
-    identityGeneratorMock = { generate: jest.fn() } as jest.Mocked<IdentityGenerator<string>>;
+    identityGeneratorMock = { generate: jest.fn() } as jest.Mocked<IIdentityGenerator<string>>;
     userServiceMock = {
       registerUser: jest.fn(),
       changeEmail: jest.fn(),
