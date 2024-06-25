@@ -1,4 +1,4 @@
-import { BaseEntity, TBaseEntityProps, TEntityProps } from '@mmda/core';
+import { Entity, TBaseProps, TEntityProps } from '@mmda/core';
 import { UserEmail, UserId, UserPassword } from './ValueObjects';
 
 export type UserProps = {
@@ -6,9 +6,9 @@ export type UserProps = {
   email: UserEmail;
   password: UserPassword;
   name: string;
-} & TBaseEntityProps<UserId>;
+} & TBaseProps<UserId>;
 
-export class UserEntity extends BaseEntity<UserProps, UserId> {
+export class UserEntity extends Entity<UserProps, UserId> {
   constructor(props: TEntityProps<UserProps>) {
     super({
       ...props,
