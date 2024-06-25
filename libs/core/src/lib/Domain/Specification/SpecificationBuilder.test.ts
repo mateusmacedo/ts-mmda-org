@@ -1,18 +1,18 @@
-import { BaseSpecificationBuilder } from './BaseSpecificationBuilder';
-import { ISpecification } from './ISpecification';
+import { SpecificationBuilder } from './SpecificationBuilder';
 import { SpecificationNotSetError } from './SpecificationErrors';
+import { ISpecification } from './Specifications';
 
 class DummyCandidate {}
 
 describe('BaseSpecificationBuilder', () => {
-  let builder: BaseSpecificationBuilder<DummyCandidate>;
+  let builder: SpecificationBuilder<DummyCandidate>;
 
   beforeEach(() => {
-    builder = new BaseSpecificationBuilder<DummyCandidate>();
+    builder = new SpecificationBuilder<DummyCandidate>();
   });
 
   it('should create an instance of BaseSpecificationBuilder', () => {
-    expect(builder).toBeInstanceOf(BaseSpecificationBuilder);
+    expect(builder).toBeInstanceOf(SpecificationBuilder);
   });
 
   it('should set initial specification with withSpecification method', () => {

@@ -1,17 +1,28 @@
-import { ISpecification } from './ISpecification';
-import { SpecificationBuilder } from './ISpecificationBuilder';
 import { SpecificationNotSetError } from './SpecificationErrors';
-import { AndSpecification, NotSpecification, OrSpecification } from './Specifications';
+import {
+  AndSpecification,
+  ISpecification,
+  NotSpecification,
+  OrSpecification,
+} from './Specifications';
 
-export class BaseSpecificationBuilder<T> implements SpecificationBuilder<T> {
+export interface ISpecificationBuilder<T> {
+  withSpecification(spec: ISpecification<T>): ISpecificationBuilder<T>;
+  and(...specs: ISpecification<T>[]): ISpecificationBuilder<T>;
+  or(...specs: ISpecification<T>[]): ISpecificationBuilder<T>;
+  not(): ISpecificationBuilder<T>;
+  build(): ISpecification<T>;
+}
+
+export class SpecificationBuilder<T> implements ISpecificationBuilder<T> {
   private spec: ISpecification<T> | null = null;
 
-  withSpecification(spec: ISpecification<T>): SpecificationBuilder<T> {
+  withSpecification(spec: ISpecification<T>): ISpecificationBuilder<T> {
     this.spec = spec;
     return this;
   }
 
-  and(...specs: ISpecification<T>[]): SpecificationBuilder<T> {
+  and(...specs: ISpecification<T>[]): ISpecificationBuilder<T> {
     if (this.spec === null) {
       throw new SpecificationNotSetError();
     }
@@ -19,7 +30,7 @@ export class BaseSpecificationBuilder<T> implements SpecificationBuilder<T> {
     return this;
   }
 
-  or(...specs: ISpecification<T>[]): SpecificationBuilder<T> {
+  or(...specs: ISpecification<T>[]): ISpecificationBuilder<T> {
     if (this.spec === null) {
       throw new SpecificationNotSetError();
     }
@@ -27,7 +38,7 @@ export class BaseSpecificationBuilder<T> implements SpecificationBuilder<T> {
     return this;
   }
 
-  not(): SpecificationBuilder<T> {
+  not(): ISpecificationBuilder<T> {
     if (this.spec === null) {
       throw new SpecificationNotSetError();
     }

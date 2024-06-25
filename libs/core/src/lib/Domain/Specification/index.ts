@@ -1,5 +1,3 @@
-export * from './BaseSpecificationBuilder';
-export * from './ISpecification';
-export * from './ISpecificationBuilder';
+export * from './SpecificationBuilder';
 export * from './SpecificationErrors';
 export * from './Specifications';
