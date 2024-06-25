@@ -3,7 +3,8 @@ import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
 import { UserEmail, UserId, UserPassword } from '../Domain/ValueObjects';
-import { UserApplicationService } from './Service';
+import { TRegisterUserDto } from './Dtos';
+import { UserApplicationService } from './Services';
 
 describe('UserApplicationService', () => {
   let userApplicationService: UserApplicationService;
@@ -46,6 +47,7 @@ describe('UserApplicationService', () => {
       const email = 'test@example.com';
       const password = 'password123';
       const name = 'Test User';
+      const registerUserDto: TRegisterUserDto = { name, email, password };
       const generatedId = 'unique-id';
 
       identityGeneratorMock.generate.mockReturnValue(generatedId);
@@ -53,9 +55,9 @@ describe('UserApplicationService', () => {
       userServiceMock.registerUser.mockReturnValue(
         new UserEntity({
           id: new UserId(generatedId),
-          email: new UserEmail(email),
-          password: new UserPassword(password),
-          name,
+          email: new UserEmail(registerUserDto.email),
+          password: new UserPassword(registerUserDto.password),
+          name: registerUserDto.name,
         }),
       );
 

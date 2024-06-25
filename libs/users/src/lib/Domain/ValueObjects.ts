@@ -1,29 +1,29 @@
 import { ValueObject } from '@mmda/core';
-export type UserIdProps = {
+export type TUserIdProps = {
   value: string;
 };
 
-export class UserId extends ValueObject<UserIdProps> {
+export class UserId extends ValueObject<TUserIdProps> {
   constructor(value: string) {
     super({ value });
   }
 }
 
-export type UserEmailProps = {
+export type TUserEmailProps = {
   value: string;
 };
 
-export class UserEmail extends ValueObject<UserEmailProps> {
+export class UserEmail extends ValueObject<TUserEmailProps> {
   constructor(value: string) {
     super({ value });
   }
 }
 
-export type UserPasswordProps = {
+export type TUserPasswordProps = {
   value: string;
 };
 
-export class UserPassword extends ValueObject<UserPasswordProps> {
+export class UserPassword extends ValueObject<TUserPasswordProps> {
   constructor(value: string) {
     super({ value });
   }
