@@ -1,8 +1,8 @@
-import { BaseEntity, TBaseEntityProps } from '../Domain/Entity';
+import { Entity, TBaseProps } from '../Domain/Entity';
 import { RepositoryError } from '../Domain/RepositoryErrors';
 import { InMemoryRepository } from './InMemoryRepository';
 
-class TestEntity extends BaseEntity<TBaseEntityProps<string>, string> {
+class TestEntity extends Entity<TBaseProps<string>, string> {
   constructor(id: string) {
     super({ id });
   }

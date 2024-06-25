@@ -1,12 +1,12 @@
-import { BaseEntity, TBaseEntityProps } from './Entity';
+import { Entity, TBaseProps } from './Entity';
 
 type TestID = string;
 
-interface TestProps extends TBaseEntityProps<TestID> {
+interface TestProps extends TBaseProps<TestID> {
   additionalProp?: string;
 }
 
-class TestEntity extends BaseEntity<TestProps, TestID> {
+class TestEntity extends Entity<TestProps, TestID> {
   constructor(props: TestProps) {
     super(props);
   }

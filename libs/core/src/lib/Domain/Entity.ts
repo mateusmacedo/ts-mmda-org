@@ -2,7 +2,7 @@ export interface IIdentityGenerator<ID> {
   generate(): ID;
 }
 
-export type TBaseEntityProps<ID> = {
+export type TBaseProps<ID> = {
   id: ID;
   version: number;
   createdAt: Date;
@@ -12,7 +12,7 @@ export type TBaseEntityProps<ID> = {
 
 export type TEntityProps<T> = Partial<T>;
 
-export abstract class BaseEntity<T extends TBaseEntityProps<ID>, ID> {
+export abstract class Entity<T extends TBaseProps<ID>, ID> {
   protected props: T;
 
   constructor(props: TEntityProps<T>) {
