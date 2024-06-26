@@ -3,7 +3,12 @@ import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
 import { UserEmail, UserId, UserPassword, Username } from '../Domain/ValueObjects';
-import { TChangeUserEmailDto, TChangeUserPasswordDto, TRegisterUserDto } from './Dtos';
+import {
+  TChangeUserEmailDto,
+  TChangeUserPasswordDto,
+  TDeleteUserDto,
+  TRegisterUserDto,
+} from './Dtos';
 import { UserApplicationService } from './Services';
 
 describe('UserApplicationService', () => {
@@ -191,8 +196,8 @@ describe('UserApplicationService', () => {
         name: new Username('Test User'),
       });
 
-      userRepositoryMock.findById.mockResolvedValue(user);
       factoryMock.create.mockImplementation((cls, args) => new cls(...args));
+      userRepositoryMock.findById.mockResolvedValue(user);
 
       await userApplicationService.changeUserPassword(dto);
 
@@ -221,29 +226,36 @@ describe('UserApplicationService', () => {
 
   describe('deleteUser', () => {
     it('should delete the user', async () => {
-      const userId = new UserId('user-id');
+      const userId = 'user-id';
+      const dto: TDeleteUserDto = {
+        userId,
+      };
       const user = new UserEntity({
-        id: userId,
+        id: new UserId(userId),
         email: new UserEmail('test@example.com'),
         password: new UserPassword('password123'),
         name: new Username('Test User'),
       });
 
+      factoryMock.create.mockImplementation((cls, args) => new cls(...args));
       userRepositoryMock.findById.mockResolvedValue(user);
 
-      await userApplicationService.deleteUser(userId);
+      await userApplicationService.deleteUser(dto);
 
-      expect(userRepositoryMock.findById).toHaveBeenCalledWith(userId);
+      expect(userRepositoryMock.findById).toHaveBeenCalledWith(new UserId(userId));
       expect(userServiceMock.deleteUser).toHaveBeenCalledWith(user);
       expect(userRepositoryMock.delete).toHaveBeenCalledWith(user);
     });
 
     it('should throw an error if user not found', async () => {
-      const userId = new UserId('user-id');
+      const userId = 'user-id';
+      const dto: TDeleteUserDto = {
+        userId,
+      };
 
       userRepositoryMock.findById.mockResolvedValue(null);
 
-      await expect(userApplicationService.deleteUser(userId)).rejects.toThrow(RepositoryError);
+      await expect(userApplicationService.deleteUser(dto)).rejects.toThrow(RepositoryError);
     });
   });
 
