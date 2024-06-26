@@ -1,20 +1,37 @@
 {
-  "name": "users",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/users/src",
+  "name": "users",
   "projectType": "library",
+  "sourceRoot": "libs/users/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/users",
-        "tsConfig": "libs/users/tsconfig.lib.json",
-        "packageJson": "libs/users/package.json",
+        "assets": ["libs/users/*.md"],
         "main": "libs/users/src/index.ts",
-        "assets": ["libs/users/*.md"]
-      }
+        "outputPath": "dist/libs/users",
+        "packageJson": "libs/users/package.json",
+        "tsConfig": "libs/users/tsconfig.lib.json"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "collectCoverage": true,
+        "collectCoverageFrom": [
+          "<rootDir>/src/**/*.{ts,tsx}",
+          "!<rootDir>/src/**/*.{test,spec}.{ts,tsx}",
+          "!<rootDir>/src/**/*.d.ts",
+          "!<rootDir>/src/**/index.ts"
+        ],
+        "coverageDirectory": "coverage/libs/users",
+        "coverageReporters": ["lcov", "text"],
+        "jestConfig": "libs/users/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/users"]
     }
   }
 }
