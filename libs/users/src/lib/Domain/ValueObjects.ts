@@ -7,6 +7,10 @@ export class UserId extends ValueObject<TUserIdProps> {
   constructor(value: string) {
     super({ value });
   }
+
+  toString(): string {
+    return this.props.value;
+  }
 }
 
 export type TUserEmailProps = {
@@ -16,6 +20,10 @@ export type TUserEmailProps = {
 export class UserEmail extends ValueObject<TUserEmailProps> {
   constructor(value: string) {
     super({ value });
+  }
+
+  toString(): string {
+    return this.props.value;
   }
 }
 
@@ -27,6 +35,10 @@ export class UserPassword extends ValueObject<TUserPasswordProps> {
   constructor(value: string) {
     super({ value });
   }
+
+  toString(): string {
+    return this.props.value;
+  }
 }
 
 export type TUsernameProps = {
@@ -36,5 +48,9 @@ export type TUsernameProps = {
 export class Username extends ValueObject<TUsernameProps> {
   constructor(value: string) {
     super({ value });
+  }
+
+  toString(): string {
+    return this.props.value;
   }
 }
