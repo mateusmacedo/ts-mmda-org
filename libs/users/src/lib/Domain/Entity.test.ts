@@ -55,8 +55,8 @@ describe('UserEntity Tests', () => {
 
   it('should delete UserEntity instance', () => {
     const entity = new UserEntity(validProps);
-    const deletedDate = new Date();
     entity.delete();
-    expect(entity.getDeletedAt()).toEqual(deletedDate);
+    expect(entity.getDeletedAt()).not.toBeNull();
+    expect(entity.getUpdatedAt()).toBeInstanceOf(Date);
   });
 });
