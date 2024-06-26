@@ -2,8 +2,7 @@ import { IFactory, IIdentityGenerator, RepositoryError } from '@mmda/core';
 import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
-import { UserEmail, UserId, UserPassword } from '../Domain/ValueObjects';
-import { TRegisterUserDto } from './Dtos';
+import { UserEmail, UserId, UserPassword, Username } from '../Domain/ValueObjects';
 import { UserApplicationService } from './Services';
 
 describe('UserApplicationService', () => {
@@ -27,7 +26,7 @@ describe('UserApplicationService', () => {
       findById: jest.fn(),
       findByEmail: jest.fn(),
       delete: jest.fn(),
-      findByName: jest.fn(), // Adicionando mock para findByName
+      findByName: jest.fn(),
     } as jest.Mocked<IUserRepository>;
 
     factoryMock = {
@@ -47,7 +46,6 @@ describe('UserApplicationService', () => {
       const email = 'test@example.com';
       const password = 'password123';
       const name = 'Test User';
-      const registerUserDto: TRegisterUserDto = { name, email, password };
       const generatedId = 'unique-id';
 
       identityGeneratorMock.generate.mockReturnValue(generatedId);
@@ -55,13 +53,13 @@ describe('UserApplicationService', () => {
       userServiceMock.registerUser.mockReturnValue(
         new UserEntity({
           id: new UserId(generatedId),
-          email: new UserEmail(registerUserDto.email),
-          password: new UserPassword(registerUserDto.password),
-          name: registerUserDto.name,
+          email: new UserEmail(email),
+          password: new UserPassword(password),
+          name: new Username(name),
         }),
       );
 
-      userRepositoryMock.findByEmail.mockResolvedValue(null); // Garantir que o usuário não exista
+      userRepositoryMock.findByEmail.mockResolvedValue(null);
 
       const result = await userApplicationService.registerUser(name, email, password);
 
@@ -78,13 +76,12 @@ describe('UserApplicationService', () => {
       const email = 'test@example.com';
       const password = 'password123';
       const name = 'Test User';
-
       userRepositoryMock.findByEmail.mockResolvedValue(
         new UserEntity({
           id: new UserId('existing-id'),
           email: new UserEmail(email),
           password: new UserPassword(password),
-          name,
+          name: new Username(name),
         }),
       );
 
@@ -102,7 +99,7 @@ describe('UserApplicationService', () => {
         id: userId,
         email: new UserEmail('old@example.com'),
         password: new UserPassword('password'),
-        name: 'Test User',
+        name: new Username('Test User'),
       });
 
       userRepositoryMock.findById.mockResolvedValue(user);
@@ -136,7 +133,7 @@ describe('UserApplicationService', () => {
         id: userId,
         email: new UserEmail('test@example.com'),
         password: new UserPassword('oldPassword123'),
-        name: 'Test User',
+        name: new Username('Test User'),
       });
 
       userRepositoryMock.findById.mockResolvedValue(user);
@@ -169,7 +166,7 @@ describe('UserApplicationService', () => {
         id: userId,
         email: new UserEmail('test@example.com'),
         password: new UserPassword('password123'),
-        name: 'Test User',
+        name: new Username('Test User'),
       });
 
       userRepositoryMock.findById.mockResolvedValue(user);
@@ -197,7 +194,7 @@ describe('UserApplicationService', () => {
         id: userId,
         email: new UserEmail('test@example.com'),
         password: new UserPassword('password123'),
-        name: 'Test User',
+        name: new Username('Test User'),
       });
 
       userRepositoryMock.findById.mockResolvedValue(user);
@@ -227,7 +224,7 @@ describe('UserApplicationService', () => {
         id: new UserId('user-id'),
         email: new UserEmail(email),
         password: new UserPassword('password123'),
-        name: 'Test User',
+        name: new Username('Test User'),
       });
 
       userRepositoryMock.findByEmail.mockResolvedValue(user);

@@ -2,7 +2,7 @@ import { IFactory, IIdentityGenerator, RepositoryError } from '@mmda/core';
 import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
-import { UserEmail, UserId, UserPassword } from '../Domain/ValueObjects';
+import { UserEmail, UserId, Username, UserPassword } from '../Domain/ValueObjects';
 
 export class UserApplicationService {
   constructor(
@@ -15,6 +15,7 @@ export class UserApplicationService {
   async registerUser(name: string, email: string, password: string): Promise<UserEntity> {
     const userEmail = this.factory.create<UserEmail>(UserEmail, [email]);
     const userPassword = this.factory.create<UserPassword>(UserPassword, [password]);
+    const username = this.factory.create<Username>(Username, [name]);
     const userId = this.factory.create<UserId>(UserId, [this.identityGenerator.generate()]);
 
     const existingUser = await this.userRepository.findByEmail(userEmail);
@@ -22,7 +23,7 @@ export class UserApplicationService {
       throw new RepositoryError('User already exists');
     }
 
-    const user = this.userService.registerUser(userId, name, userEmail, userPassword);
+    const user = this.userService.registerUser(userId, username, userEmail, userPassword);
     await this.userRepository.save(user);
 
     return user;
