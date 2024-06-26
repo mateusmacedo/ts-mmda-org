@@ -50,9 +50,7 @@ export abstract class ValueObject<T extends TValueObjectProps<T>> implements IVa
     return obj !== null && typeof obj === 'object';
   }
 
-  public toString(): string {
-    return JSON.stringify(this.props);
-  }
+  abstract toString(): string;
 
   public toValue(): T {
     return this.props;

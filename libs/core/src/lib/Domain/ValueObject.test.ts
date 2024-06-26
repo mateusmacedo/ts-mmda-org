@@ -6,7 +6,11 @@ class TestValueObject extends ValueObject<{
   values?: number[];
   obj?: Record<string, unknown>;
   num?: number;
-}> {}
+}> {
+  toString(): string {
+    return JSON.stringify(this.props);
+  }
+}
 
 class AnotherTestValueObject extends ValueObject<{
   id?: number;
@@ -14,7 +18,11 @@ class AnotherTestValueObject extends ValueObject<{
   values?: number[];
   obj?: Record<string, unknown>;
   num?: number;
-}> {}
+}> {
+  toString(): string {
+    return JSON.stringify(this.props);
+  }
+}
 
 describe('BaseValueObject', () => {
   it('should create an instance with valid props and check if equals method returns true for the same instance', () => {
