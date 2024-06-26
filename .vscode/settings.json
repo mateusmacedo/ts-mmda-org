@@ -1,0 +1,14 @@
+{
+  "jest.virtualFolders": [
+    {
+      "name": "core",
+      "rootPath": "libs/core",
+      "jestCommandLine": "pnpm exec nx run core:test"
+    },
+    {
+      "name": "users",
+      "rootPath": "libs/users",
+      "jestCommandLine": "pnpm exec nx run users:test"
+    }
+  ]
+}
