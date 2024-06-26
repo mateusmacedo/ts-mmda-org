@@ -8,13 +8,17 @@
     "build": {
       "executor": "@nx/js:tsc",
       "options": {
-        "assets": ["libs/core/*.md"],
+        "assets": [
+          "libs/core/*.md"
+        ],
         "main": "libs/core/src/index.ts",
         "outputPath": "dist/libs/core",
         "packageJson": "libs/core/package.json",
         "tsConfig": "libs/core/tsconfig.lib.json"
       },
-      "outputs": ["{options.outputPath}"]
+      "outputs": [
+        "{options.outputPath}"
+      ]
     },
     "test": {
       "executor": "@nx/jest:jest",
@@ -26,12 +30,17 @@
           "!<rootDir>/src/**/*.d.ts",
           "!<rootDir>/src/**/index.ts"
         ],
-        "coverageDirectory": "coverage/libs/core",
-        "coverageReporters": ["lcov", "text"],
-        "jestConfig": "libs/core/jest.config.ts",
+        "coverageDirectory": "{workspaceRoot}/coverage/{projectRoot}",
+        "coverageReporters": [
+          "lcov",
+          "text"
+        ],
+        "jestConfig": "{projectRoot}/jest.config.ts",
         "passWithNoTests": true
       },
-      "outputs": ["{workspaceRoot}/coverage/libs/core"]
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ]
     }
   }
 }
