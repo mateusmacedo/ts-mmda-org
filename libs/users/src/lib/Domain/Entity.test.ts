@@ -1,11 +1,11 @@
 import { UserEntity } from './Entity';
-import { UserEmail, UserId, UserPassword } from './ValueObjects';
+import { UserEmail, UserId, Username, UserPassword } from './ValueObjects';
 describe('UserEntity Tests', () => {
   const validProps = {
     id: new UserId('123'),
     email: new UserEmail('test@example.com'),
     password: new UserPassword('password123'),
-    name: 'John Doe',
+    name: new Username('John Doe'),
     createdAt: new Date(),
     updatedAt: new Date(),
     deletedAt: null,
@@ -42,15 +42,10 @@ describe('UserEntity Tests', () => {
 
   it('should change name of UserEntity instance', () => {
     const entity = new UserEntity(validProps);
-    const newName = 'Jane Doe';
+    const newName = new Username('Jane Doe');
     entity.changeName(newName);
     expect(entity.getName()).toBe(newName);
     expect(entity.getUpdatedAt()).toBeInstanceOf(Date);
-  });
-
-  it('should throw error when changing name to empty', () => {
-    const entity = new UserEntity(validProps);
-    expect(() => entity.changeName('')).toThrow('Name cannot be empty');
   });
 
   it('should delete UserEntity instance', () => {

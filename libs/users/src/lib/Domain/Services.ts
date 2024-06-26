@@ -1,9 +1,14 @@
 import { IFactory } from '@mmda/core';
 import { UserEntity } from './Entity';
-import { UserEmail, UserId, UserPassword } from './ValueObjects';
+import { UserEmail, UserId, Username, UserPassword } from './ValueObjects';
 
 export interface IUserService {
-  registerUser(userId: UserId, name: string, email: UserEmail, password: UserPassword): UserEntity;
+  registerUser(
+    userId: UserId,
+    username: Username,
+    email: UserEmail,
+    password: UserPassword,
+  ): UserEntity;
   changeEmail(user: UserEntity, newEmail: UserEmail): void;
   changePassword(user: UserEntity, newPassword: UserPassword): void;
   deleteUser(user: UserEntity): void;
@@ -12,13 +17,18 @@ export interface IUserService {
 export class UserService implements IUserService {
   constructor(private factory: IFactory) {}
 
-  registerUser(userId: UserId, name: string, email: UserEmail, password: UserPassword): UserEntity {
+  registerUser(
+    userId: UserId,
+    username: Username,
+    email: UserEmail,
+    password: UserPassword,
+  ): UserEntity {
     const user = this.factory.create<UserEntity>(UserEntity, [
       {
         id: userId,
         email: email,
         password: password,
-        name,
+        name: username,
         version: 1,
         createdAt: new Date(),
         updatedAt: new Date(),

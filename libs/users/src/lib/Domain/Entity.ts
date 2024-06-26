@@ -1,11 +1,11 @@
 import { Entity, TBaseProps, TEntityProps } from '@mmda/core';
-import { UserEmail, UserId, UserPassword } from './ValueObjects';
+import { UserEmail, UserId, Username, UserPassword } from './ValueObjects';
 
 export type UserProps = {
   id: UserId;
   email: UserEmail;
   password: UserPassword;
-  name: string;
+  name: Username;
 } & TBaseProps<UserId>;
 
 export class UserEntity extends Entity<UserProps, UserId> {
@@ -19,7 +19,7 @@ export class UserEntity extends Entity<UserProps, UserId> {
     return this.props.email;
   }
 
-  public getName(): string {
+  public getName(): Username {
     return this.props.name;
   }
 
@@ -37,7 +37,7 @@ export class UserEntity extends Entity<UserProps, UserId> {
     this.updateTimestamp();
   }
 
-  public changeName(newName: string): void {
+  public changeName(newName: Username): void {
     if (!newName) {
       throw new Error('Name cannot be empty');
     }

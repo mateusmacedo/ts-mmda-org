@@ -28,3 +28,13 @@ export class UserPassword extends ValueObject<TUserPasswordProps> {
     super({ value });
   }
 }
+
+export type TUsernameProps = {
+  value: string;
+};
+
+export class Username extends ValueObject<TUsernameProps> {
+  constructor(value: string) {
+    super({ value });
+  }
+}
