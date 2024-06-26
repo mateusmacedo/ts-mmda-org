@@ -21,9 +21,6 @@
       ]
     },
     "test": {
-      "dependsOn": [
-        ""
-      ],
       "executor": "@nx/jest:jest",
       "options": {
         "collectCoverage": true,

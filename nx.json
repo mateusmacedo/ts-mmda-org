@@ -68,7 +68,7 @@
     "@nx/jest:jest": {
       "cache": true,
       "dependsOn": [
-        "^build"
+        "^test"
       ],
       "inputs": [
         "default",
