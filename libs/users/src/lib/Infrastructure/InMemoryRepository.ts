@@ -1,7 +1,7 @@
 import { InMemoryRepository } from '@mmda/core';
 import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
-import { UserEmail, UserId } from '../Domain/ValueObjects';
+import { UserEmail, UserId, Username } from '../Domain/ValueObjects';
 
 export class InMemoryUserRepository
   extends InMemoryRepository<UserEntity, UserId>
@@ -9,12 +9,12 @@ export class InMemoryUserRepository
 {
   async findByEmail(email: UserEmail): Promise<UserEntity | null> {
     const users = await this.findAll();
-    return users.find((user) => user.getEmail().toString() === email.toString()) || null;
+    return users.find((user) => user.getEmail().toValue().value === email.toValue().value) || null;
   }
 
-  async findByName(name: string): Promise<UserEntity[]> {
+  async findByName(name: Username): Promise<UserEntity[]> {
     const users = await this.findAll();
-    return users.filter((user) => user.getName() === name);
+    return users.filter((user) => user.getName().toValue().value === name.toValue().value);
   }
 
   async save(user: UserEntity): Promise<UserEntity> {

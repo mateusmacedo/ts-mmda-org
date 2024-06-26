@@ -1,5 +1,5 @@
 import { UserEntity } from '../Domain/Entity';
-import { UserEmail, UserId, UserPassword } from '../Domain/ValueObjects';
+import { UserEmail, UserId, Username, UserPassword } from '../Domain/ValueObjects';
 import { InMemoryUserRepository } from './InMemoryRepository';
 
 describe('InMemoryUserRepository', () => {
@@ -13,7 +13,7 @@ describe('InMemoryUserRepository', () => {
     return new UserEntity({
       id: new UserId(id),
       email: new UserEmail(email),
-      name: name,
+      name: new Username(name),
       password: new UserPassword(password),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -44,12 +44,12 @@ describe('InMemoryUserRepository', () => {
       await userRepository.save(user1);
       await userRepository.save(user2);
 
-      const foundUsers = await userRepository.findByName('Test User');
+      const foundUsers = await userRepository.findByName(new Username('Test User'));
       expect(foundUsers).toEqual([user1, user2]);
     });
 
     it('should return an empty array if no users are found', async () => {
-      const foundUsers = await userRepository.findByName('Nonexistent User');
+      const foundUsers = await userRepository.findByName(new Username('Nonexistent User'));
       expect(foundUsers).toEqual([]);
     });
   });
