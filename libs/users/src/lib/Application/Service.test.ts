@@ -3,7 +3,7 @@ import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
 import { UserEmail, UserId, UserPassword, Username } from '../Domain/ValueObjects';
-import { TChangeUserEmailDto, TRegisterUserDto } from './Dtos';
+import { TChangeUserEmailDto, TChangeUserPasswordDto, TRegisterUserDto } from './Dtos';
 import { UserApplicationService } from './Services';
 
 describe('UserApplicationService', () => {
@@ -178,10 +178,14 @@ describe('UserApplicationService', () => {
 
   describe('changeUserPassword', () => {
     it('should change the user password', async () => {
-      const userId = new UserId('user-id');
+      const userId = 'user-id';
       const newPassword = 'newPassword123';
+      const dto: TChangeUserPasswordDto = {
+        userId,
+        newPassword,
+      };
       const user = new UserEntity({
-        id: userId,
+        id: new UserId(userId),
         email: new UserEmail('test@example.com'),
         password: new UserPassword('oldPassword123'),
         name: new Username('Test User'),
@@ -190,23 +194,28 @@ describe('UserApplicationService', () => {
       userRepositoryMock.findById.mockResolvedValue(user);
       factoryMock.create.mockImplementation((cls, args) => new cls(...args));
 
-      await userApplicationService.changeUserPassword(userId, newPassword);
+      await userApplicationService.changeUserPassword(dto);
 
-      expect(userRepositoryMock.findById).toHaveBeenCalledWith(userId);
+      expect(userRepositoryMock.findById).toHaveBeenCalledWith(new UserId(userId));
       expect(factoryMock.create).toHaveBeenCalledWith(UserPassword, [newPassword]);
-      expect(userServiceMock.changePassword).toHaveBeenCalledWith(user, expect.any(UserPassword));
+      expect(userServiceMock.changePassword).toHaveBeenCalledWith(
+        user,
+        new UserPassword(newPassword),
+      );
       expect(userRepositoryMock.save).toHaveBeenCalledWith(user);
     });
 
     it('should throw an error if user not found', async () => {
-      const userId = new UserId('user-id');
+      const userId = 'user-id';
       const newPassword = 'newPassword123';
+      const dto: TChangeUserPasswordDto = {
+        userId,
+        newPassword,
+      };
 
       userRepositoryMock.findById.mockResolvedValue(null);
 
-      await expect(userApplicationService.changeUserPassword(userId, newPassword)).rejects.toThrow(
-        RepositoryError,
-      );
+      await expect(userApplicationService.changeUserPassword(dto)).rejects.toThrow(RepositoryError);
     });
   });
 
