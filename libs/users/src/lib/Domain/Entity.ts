@@ -38,7 +38,7 @@ export class UserEntity extends Entity<UserProps, UserId> {
   }
 
   public changeName(newName: Username): void {
-    if (!newName) {
+    if (!newName.toValue().value || newName.toValue().value === '') {
       throw new Error('Name cannot be empty');
     }
     this.props.name = newName;

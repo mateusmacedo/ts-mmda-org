@@ -48,6 +48,11 @@ describe('UserEntity Tests', () => {
     expect(entity.getUpdatedAt()).toBeInstanceOf(Date);
   });
 
+  it('should throw error when changing name to empty', () => {
+    const entity = new UserEntity(validProps);
+    expect(() => entity.changeName(new Username(''))).toThrow('Name cannot be empty');
+  });
+
   it('should delete UserEntity instance', () => {
     const entity = new UserEntity(validProps);
     const deletedDate = new Date();
