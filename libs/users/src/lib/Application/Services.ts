@@ -3,6 +3,7 @@ import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
 import { UserEmail, UserId, Username, UserPassword } from '../Domain/ValueObjects';
+import { TRegisterUserDto } from './Dtos';
 
 export class UserApplicationService {
   constructor(
@@ -12,11 +13,13 @@ export class UserApplicationService {
     private factory: IFactory,
   ) {}
 
-  async registerUser(name: string, email: string, password: string): Promise<UserEntity> {
-    const userEmail = this.factory.create<UserEmail>(UserEmail, [email]);
-    const userPassword = this.factory.create<UserPassword>(UserPassword, [password]);
-    const username = this.factory.create<Username>(Username, [name]);
-    const userId = this.factory.create<UserId>(UserId, [this.identityGenerator.generate()]);
+  async registerUser(dto: TRegisterUserDto): Promise<UserEntity> {
+    const userEmail = this.factory.create<UserEmail>(UserEmail, [dto.email]);
+    const userPassword = this.factory.create<UserPassword>(UserPassword, [dto.password]);
+    const username = this.factory.create<Username>(Username, [dto.name]);
+
+    const id = dto.id ?? this.identityGenerator.generate();
+    const userId = this.factory.create<UserId>(UserId, [id]);
 
     const existingUser = await this.userRepository.findByEmail(userEmail);
     if (existingUser) {

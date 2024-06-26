@@ -1,4 +1,5 @@
 export type TRegisterUserDto = {
+  id?: string;
   name: string;
   email: string;
   password: string;
