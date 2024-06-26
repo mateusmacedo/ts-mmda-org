@@ -3,6 +3,7 @@ import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
 import { UserEmail, UserId, UserPassword, Username } from '../Domain/ValueObjects';
+import { TChangeUserEmailDto, TRegisterUserDto } from './Dtos';
 import { UserApplicationService } from './Services';
 
 describe('UserApplicationService', () => {
@@ -46,13 +47,18 @@ describe('UserApplicationService', () => {
       const email = 'test@example.com';
       const password = 'password123';
       const name = 'Test User';
-      const generatedId = 'unique-id';
+      const id = 'unique-id';
+      const dto: TRegisterUserDto = {
+        email,
+        password,
+        name,
+      };
 
-      identityGeneratorMock.generate.mockReturnValue(generatedId);
+      identityGeneratorMock.generate.mockReturnValue(id);
       factoryMock.create.mockImplementation((cls, args) => new cls(...args));
       userServiceMock.registerUser.mockReturnValue(
         new UserEntity({
-          id: new UserId(generatedId),
+          id: new UserId(id),
           email: new UserEmail(email),
           password: new UserPassword(password),
           name: new Username(name),
@@ -61,12 +67,46 @@ describe('UserApplicationService', () => {
 
       userRepositoryMock.findByEmail.mockResolvedValue(null);
 
-      const result = await userApplicationService.registerUser(name, email, password);
+      const result = await userApplicationService.registerUser(dto);
 
       expect(identityGeneratorMock.generate).toHaveBeenCalled();
       expect(factoryMock.create).toHaveBeenCalledWith(UserEmail, [email]);
       expect(factoryMock.create).toHaveBeenCalledWith(UserPassword, [password]);
-      expect(factoryMock.create).toHaveBeenCalledWith(UserId, [generatedId]);
+      expect(factoryMock.create).toHaveBeenCalledWith(UserId, [id]);
+      expect(userServiceMock.registerUser).toHaveBeenCalled();
+      expect(userRepositoryMock.save).toHaveBeenCalled();
+      expect(result).toBeInstanceOf(UserEntity);
+    });
+
+    it('should register a new user with provided id', async () => {
+      const email = 'test@example.com';
+      const password = 'password123';
+      const name = 'Test User';
+      const id = 'provided-id';
+      const dto: TRegisterUserDto = {
+        id,
+        email,
+        password,
+        name,
+      };
+
+      factoryMock.create.mockImplementation((cls, args) => new cls(...args));
+      userServiceMock.registerUser.mockReturnValue(
+        new UserEntity({
+          id: new UserId(id),
+          email: new UserEmail(email),
+          password: new UserPassword(password),
+          name: new Username(name),
+        }),
+      );
+
+      userRepositoryMock.findByEmail.mockResolvedValue(null);
+
+      const result = await userApplicationService.registerUser(dto);
+
+      expect(factoryMock.create).toHaveBeenCalledWith(UserEmail, [email]);
+      expect(factoryMock.create).toHaveBeenCalledWith(UserPassword, [password]);
+      expect(factoryMock.create).toHaveBeenCalledWith(UserId, [id]);
       expect(userServiceMock.registerUser).toHaveBeenCalled();
       expect(userRepositoryMock.save).toHaveBeenCalled();
       expect(result).toBeInstanceOf(UserEntity);
@@ -76,6 +116,11 @@ describe('UserApplicationService', () => {
       const email = 'test@example.com';
       const password = 'password123';
       const name = 'Test User';
+      const dto: TRegisterUserDto = {
+        email,
+        password,
+        name,
+      };
       userRepositoryMock.findByEmail.mockResolvedValue(
         new UserEntity({
           id: new UserId('existing-id'),
@@ -85,18 +130,20 @@ describe('UserApplicationService', () => {
         }),
       );
 
-      await expect(userApplicationService.registerUser(name, email, password)).rejects.toThrow(
-        RepositoryError,
-      );
+      await expect(userApplicationService.registerUser(dto)).rejects.toThrow(RepositoryError);
     });
   });
 
   describe('changeUserEmail', () => {
     it('should change the user email', async () => {
-      const userId = new UserId('user-id');
+      const userId = 'user-id';
       const newEmail = 'new@example.com';
+      const dto: TChangeUserEmailDto = {
+        userId,
+        newEmail,
+      };
       const user = new UserEntity({
-        id: userId,
+        id: new UserId(userId),
         email: new UserEmail('old@example.com'),
         password: new UserPassword('password'),
         name: new Username('Test User'),
@@ -105,23 +152,27 @@ describe('UserApplicationService', () => {
       userRepositoryMock.findById.mockResolvedValue(user);
       factoryMock.create.mockImplementation((cls, args) => new cls(...args));
 
-      await userApplicationService.changeUserEmail(userId, newEmail);
+      await userApplicationService.changeUserEmail(dto);
 
-      expect(userRepositoryMock.findById).toHaveBeenCalledWith(userId);
+      expect(userRepositoryMock.findById).toHaveBeenCalledWith(new UserId(userId));
       expect(factoryMock.create).toHaveBeenCalledWith(UserEmail, [newEmail]);
-      expect(userServiceMock.changeEmail).toHaveBeenCalledWith(user, expect.any(UserEmail));
+      expect(userServiceMock.changeEmail).toHaveBeenCalledWith(
+        user,
+        new UserEmail('new@example.com'),
+      );
       expect(userRepositoryMock.save).toHaveBeenCalledWith(user);
     });
 
     it('should throw an error if user not found', async () => {
-      const userId = new UserId('user-id');
+      const userId = 'user-id';
       const newEmail = 'new@example.com';
-
+      const dto: TChangeUserEmailDto = {
+        userId,
+        newEmail,
+      };
       userRepositoryMock.findById.mockResolvedValue(null);
 
-      await expect(userApplicationService.changeUserEmail(userId, newEmail)).rejects.toThrow(
-        RepositoryError,
-      );
+      await expect(userApplicationService.changeUserEmail(dto)).rejects.toThrow(RepositoryError);
     });
   });
 
