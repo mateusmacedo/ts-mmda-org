@@ -3,7 +3,12 @@ import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
 import { UserEmail, UserId, Username, UserPassword } from '../Domain/ValueObjects';
-import { TChangeUserEmailDto, TChangeUserPasswordDto, TRegisterUserDto } from './Dtos';
+import {
+  TChangeUserEmailDto,
+  TChangeUserPasswordDto,
+  TDeleteUserDto,
+  TRegisterUserDto,
+} from './Dtos';
 
 export class UserApplicationService {
   constructor(
@@ -58,7 +63,8 @@ export class UserApplicationService {
     await this.userRepository.save(user);
   }
 
-  async deleteUser(userId: UserId): Promise<void> {
+  async deleteUser(dto: TDeleteUserDto): Promise<void> {
+    const userId = this.factory.create<UserId>(UserId, [dto.userId]);
     const user = await this.userRepository.findById(userId);
     if (!user) {
       throw new RepositoryError('User not found');

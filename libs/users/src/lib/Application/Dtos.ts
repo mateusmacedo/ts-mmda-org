@@ -14,3 +14,7 @@ export type TChangeUserPasswordDto = {
   userId: string;
   newPassword: string;
 };
+
+export type TDeleteUserDto = {
+  userId: string;
+};
