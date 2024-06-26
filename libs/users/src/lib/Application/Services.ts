@@ -3,7 +3,7 @@ import { UserEntity } from '../Domain/Entity';
 import { IUserRepository } from '../Domain/Repository';
 import { IUserService } from '../Domain/Services';
 import { UserEmail, UserId, Username, UserPassword } from '../Domain/ValueObjects';
-import { TRegisterUserDto } from './Dtos';
+import { TChangeUserEmailDto, TRegisterUserDto } from './Dtos';
 
 export class UserApplicationService {
   constructor(
@@ -32,14 +32,15 @@ export class UserApplicationService {
     return user;
   }
 
-  async changeUserEmail(userId: UserId, newEmail: string): Promise<void> {
+  async changeUserEmail(dto: TChangeUserEmailDto): Promise<void> {
+    const userId = this.factory.create<UserId>(UserId, [dto.userId]);
     const user = await this.userRepository.findById(userId);
     if (!user) {
       throw new RepositoryError('User not found');
     }
 
-    const userEmail = this.factory.create<UserEmail>(UserEmail, [newEmail]);
-    this.userService.changeEmail(user, userEmail);
+    const newEmail = this.factory.create<UserEmail>(UserEmail, [dto.newEmail]);
+    this.userService.changeEmail(user, newEmail);
 
     await this.userRepository.save(user);
   }

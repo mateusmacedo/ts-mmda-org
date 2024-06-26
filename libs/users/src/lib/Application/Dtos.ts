@@ -4,3 +4,8 @@ export type TRegisterUserDto = {
   email: string;
   password: string;
 };
+
+export type TChangeUserEmailDto = {
+  userId: string;
+  newEmail: string;
+};
