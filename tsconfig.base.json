@@ -19,5 +19,5 @@
       "@mmda/users": ["libs/users/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "dist", "out-tsc", "e2e", "coverage"]
 }
