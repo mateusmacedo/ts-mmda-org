@@ -1,4 +1,4 @@
-import { UserEntity } from './Entity';
+import { UserEntity, UserProps } from './Entity';
 import { UserEmail, UserId, Username, UserPassword } from './ValueObjects';
 describe('UserEntity Tests', () => {
   const validProps = {
@@ -9,7 +9,7 @@ describe('UserEntity Tests', () => {
     createdAt: new Date(),
     updatedAt: new Date(),
     deletedAt: null,
-  };
+  } as UserProps;
 
   it('should create a UserEntity instance with valid props', () => {
     const entity = new UserEntity(validProps);
