@@ -71,15 +71,15 @@ describe('Message Class', () => {
   describe('Edge Cases', () => {
     it('should throw RequiredPropsError when required properties are missing', () => {
       expect(() => {
-        new TestMessage({ ...validProps, id: undefined } as TMessageProps);
+        new TestMessage({ ...validProps, id: undefined } as unknown as TMessageProps);
       }).toThrow(RequiredPropsError);
 
       expect(() => {
-        new TestMessage({ ...validProps, type: undefined } as TMessageProps);
+        new TestMessage({ ...validProps, type: undefined } as unknown as TMessageProps);
       }).toThrow(RequiredPropsError);
 
       expect(() => {
-        new TestMessage({ ...validProps, timestamp: undefined } as TMessageProps);
+        new TestMessage({ ...validProps, timestamp: undefined } as unknown as TMessageProps);
       }).toThrow(RequiredPropsError);
     });
 

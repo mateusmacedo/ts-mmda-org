@@ -111,7 +111,7 @@ describe('BaseEntity Tests', () => {
   });
 
   it('should not throw error when creating BaseEntity with undefined deletedAt', () => {
-    const invalidProps: TestProps = { ...validProps, deletedAt: undefined };
+    const invalidProps = { ...validProps, deletedAt: undefined } as unknown as TestProps;
     expect(() => new TestEntity(invalidProps)).not.toThrow();
   });
 
@@ -134,28 +134,40 @@ describe('BaseEntity Tests', () => {
 
   // Testing default values
   it('should create BaseEntity with default version', () => {
-    const propsWithoutVersion: TestProps = { ...validProps, version: undefined };
+    const propsWithoutVersion: TestProps = {
+      ...validProps,
+      version: undefined,
+    } as unknown as TestProps;
     delete propsWithoutVersion.version;
     const entity = new TestEntity(propsWithoutVersion);
     expect(entity.getVersion()).toBe(1); // Default version is 1
   });
 
   it('should create BaseEntity with default createdAt', () => {
-    const propsWithoutCreatedAt: TestProps = { ...validProps, createdAt: undefined };
+    const propsWithoutCreatedAt: TestProps = {
+      ...validProps,
+      createdAt: undefined,
+    } as unknown as TestProps;
     delete propsWithoutCreatedAt.createdAt;
     const entity = new TestEntity(propsWithoutCreatedAt);
     expect(entity.getCreatedAt()).toBeInstanceOf(Date);
   });
 
   it('should create BaseEntity with default updatedAt', () => {
-    const propsWithoutUpdatedAt: TestProps = { ...validProps, updatedAt: undefined };
+    const propsWithoutUpdatedAt: TestProps = {
+      ...validProps,
+      updatedAt: undefined,
+    } as unknown as TestProps;
     delete propsWithoutUpdatedAt.updatedAt;
     const entity = new TestEntity(propsWithoutUpdatedAt);
     expect(entity.getUpdatedAt()).toBeInstanceOf(Date);
   });
 
   it('should create BaseEntity with default deletedAt', () => {
-    const propsWithoutDeletedAt: TestProps = { ...validProps, deletedAt: undefined };
+    const propsWithoutDeletedAt: TestProps = {
+      ...validProps,
+      deletedAt: undefined,
+    } as unknown as TestProps;
     delete propsWithoutDeletedAt.deletedAt;
     const entity = new TestEntity(propsWithoutDeletedAt);
     expect(entity.getDeletedAt()).toBeNull(); // Default deletedAt is null
